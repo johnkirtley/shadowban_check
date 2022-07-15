@@ -11,8 +11,8 @@ const status = {
 };
 
 const transporter = nodemailer.createTransport({
-	host: 'smtp.gmail.com',
-	port: 587,
+	host: process.env.EMAIL_HOST,
+	port: process.env.EMAIL_PORT,
 	secure: false,
 	requireTLS: true,
 	pool: true,
@@ -28,7 +28,7 @@ const transporter = nodemailer.createTransport({
 const getStatus = () => {
 	axios
 		.get(
-			'https://taishin-miyamoto.com/ShadowBan/API/JSON?screen_name=0xj0hnj0hn'
+			`https://taishin-miyamoto.com/ShadowBan/API/JSON?screen_name=${process.env.SCREEN_NAME}`
 		)
 		.then((res) => {
 			status.ghostBan = res.data.ghost_ban;
@@ -55,7 +55,7 @@ const getStatus = () => {
 				});
 			}
 
-			if (!status.replyDeboost) {
+			if (!res.data.reply_deboosting) {
 				const mailOptions = {
 					from: '"Personal Ban Bot" <from@example.com>',
 					to: 'kirtleyj16@gmail.com',
